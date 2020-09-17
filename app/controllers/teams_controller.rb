@@ -57,6 +57,7 @@ class TeamsController < ApplicationController
     if current_user == @team.owner
       @team.owner_id = @assign.user_id
       @team.save
+      TeamOwnerChangeMailer.team_owner_change_mail(@team).deliver
       redirect_to @team, notice: I18n.t('views.messages.change_owner:')
     else
       redirect_to @team, notice: I18n.t('views.messages.no_authority')
