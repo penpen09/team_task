@@ -23,6 +23,7 @@ class AgendasController < ApplicationController
 
   def destroy
     if @agenda.user == current_user || @agenda.team.owner == current_user
+      AgendasDeleteMailer.agendas_delete_mail(@agenda).deliver
       @agenda.destroy
       redirect_to dashboard_url
     else

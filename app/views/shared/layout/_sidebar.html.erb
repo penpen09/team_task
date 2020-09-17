@@ -34,7 +34,7 @@
               <i class="fa fa-circle-o nav-icon"></i>
               <p>
                 <%= agenda.title %>
-                <% if current_user.id == agenda.user_id || current_user == @team.owner %>
+                <% if current_user == agenda.team.owner || current_user == agenda.user %>
                   <object>
                     <%= link_to '削除', agenda, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-sm btn-danger d-inline-block' %>
                   </object>
