@@ -22,11 +22,11 @@ class AgendasController < ApplicationController
   end
 
   def destroy
-    if agenda.user == current_user || agenda.team.owner == current_user
+    if @agenda.user == current_user || @agenda.team.owner == current_user
       @agenda.destroy
       redirect_to dashboard_url
     else
-      redirect_to dashboard_url
+      redirect_to dashboard_url, notice: '権限がありません'
     end
   end
 
