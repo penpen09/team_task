@@ -48,6 +48,11 @@
                           <%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %>
                         <% end %>
                       </td>
+                      <td>
+                        <% if current_user == @team.owner %>
+                          <%= link_to I18n.t('views.button.change_ownership'), team_owner_change_path(@team, assign: assign.id), method: :post, class: 'btn btn-sm btn-danger' %>
+                        <% end %>
+                      </td>
                     </tr>
                   <% end %>
                 </tbody>

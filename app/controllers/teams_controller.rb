@@ -51,6 +51,18 @@ class TeamsController < ApplicationController
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
 
+  def owner_change
+    @assign = Assign.find(params[:assign])
+    @team = @assign.team
+    if current_user == @team.owner
+      @team.owner_id = @assign.user_id
+      @team.save
+      redirect_to @team, notice: I18n.t('views.messages.change_owner:')
+    else
+      redirect_to @team, notice: I18n.t('views.messages.no_authority')
+    end
+  end
+
   private
 
   def set_team
