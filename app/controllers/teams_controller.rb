@@ -15,7 +15,11 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  def edit; end
+  def edit
+    unless current_user == @team.owner
+      redirect_to @team , notice: I18n.t('views.messages.not_edit_team')
+    end
+  end
 
   def create
     @team = Team.new(team_params)
@@ -45,6 +49,19 @@ class TeamsController < ApplicationController
 
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
+  end
+
+  def owner_change
+    @assign = Assign.find(params[:assign])
+    @team = @assign.team
+    if current_user == @team.owner
+      @team.owner_id = @assign.user_id
+      @team.save
+      TeamOwnerChangeMailer.team_owner_change_mail(@team).deliver
+      redirect_to @team, notice: I18n.t('views.messages.change_owner:')
+    else
+      redirect_to @team, notice: I18n.t('views.messages.no_authority')
+    end
   end
 
   private
